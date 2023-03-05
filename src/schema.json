@@ -93,7 +93,6 @@
         "status": {"fk": "order_status"}
     },
     "order": {
-        "id": {"type": "int", "pk": true}, 
         "datetime": {"type": "datetime", "default": "1999-12-31T23:59:59"},
         "customer": {"fk": "customer"}, 
         "cart": {"m2m": "product_in_cart"},
@@ -124,7 +123,6 @@
         "ship_to": {"fk": "ship_to"}
     },
     "ship":{
-        "id": {"type": "int", "pk": true}, 
         "scheduled_time": {"type": "datetime", "default": "1999-12-31T23:59:59"},
         "carrier": {"type": "str", "default": ""},
         "from": {"type": "str", "default": "Farm"},
