@@ -1,0 +1,135 @@
+{
+    "customer_group": {
+        "name": {"type": "str", "default": ""},
+        "number_customer": {"type": "int", "default": 0},
+        "number_member": {"type": "int", "default": 0}
+    }, 
+    "address": {
+        "street_address": { "type": "str", "default": "" },
+        "street_address_2": { "type": "str", "default": "" },
+        "city": { "type": "str", "default": "" },
+        "state": { "type": "str", "default": "New York", "description": "State full name" },
+        "state_code": { "type": "str", "default": "NY", "description": "State code; e.g. MA, NY, CA, etc." }, 
+        "country": { "type" : "str", "default": "USA" }, 
+        "zip": { "type": "str", "default": "", "format": "5-digit zip code" },
+        "distance_from_farm": {"type": "float", "default": 0.0, "description": "unit: mile"},
+        "group": {"type": "str", "default": ""}
+    },
+    "contact_person": {
+        "name": {"type": "str", "default": ""},
+        "phone": {"type": "str", "default": ""},
+        "email": {"type": "str", "default": ""}
+    },
+    "product_in_stock": {
+        "table": "product", 
+        "number": {"type": "int", "default": 0}, 
+        "storage_date": {"type": "date", "default": "1999-12-31"}, 
+        "expire_date": {"type": "date", "default": "1999-12-31"}
+    },
+    "pickup_address": {
+        "name": {"type": "str", "default": ""}, 
+        "address": {"fk": "address"}, 
+        "contact_person": {"m2m": "contact_person"},
+        "number_total_refrigerator": {"type": "int", "default": 0},
+        "number_active_refrigerator": {"type": "int", "default": 0},
+        "product_in_stock": {"m2m": "product_in_stock"}
+    },
+    "customer": {
+        "name": {"type": "str", "default": ""}, 
+        "is_member": {"type": "bool", "default": false}, 
+        "membership_start_datetime": {"type": "datetime", "default": "1999-12-31T23:59:59"},
+        "balance": {"type": "float", "default": 0.0},
+        "group": {"fk": "customer_group"}, 
+        "phone": {"type": "str", "default": ""}, 
+        "address": {"fk": "address"}, 
+        "email": {"type": "str", "default": ""}, 
+        "wechat": {"type": "str", "default": ""}, 
+        "facebook": {"type": "str", "default": ""}, 
+        "pickup_address": {"fk": "address"}
+    },
+    "deposit": {
+        "datetime": {"type": "datetime", "default": "1999-12-31T23:59:59"},
+        "customer": {"fk": "customer"},
+        "amount": {"type": "float", "default": 0.0, "description": "unit: $"},
+        "method": {"type": "str", "default": "cash", "options": ["cash", "check", "zelle", "credit card"]},
+        "is_confirmed": {"type": "bool", "default": false},
+        "balance_before": {"type": "float", "default": 0.0}, 
+        "balance_after": {"type": "float", "default": 0.0}
+    },
+    "image": {
+        "path": {"type": "str", "default": ""},
+        "caption": {"type": "str", "default": ""},
+        "height": {"type": "int", "default": 0, "description": "unit: px"},
+        "width": {"type": "int", "default": 0, "description": "unit: px"}
+    },
+    "product": {
+        "name": {"type": "str", "default": ""}, 
+        "category": {"type": "str", "default": "mushroom", "options": ["mushroom", "vegetable", "meat", "egg", "cooked food"]}, 
+        "description": {"type": "str", "default": ""}, 
+        "picture": {"m2m": "image"},
+        "unit": {"type": "str", "default": "#", "options": ["lb", "oz", "#", "dozen", "half"]},
+        "unit_price": {"type": "float", "default": 0.0, "description": "unit: $"},
+        "number_in_stock": {"type": "int", "default": 9999},
+        "need_refrig": {"type": "bool", "default": false},
+        "need_freeze": {"type": "bool", "default": false}
+    },
+    "product_in_cart": {
+        "product": {"fk": "product"},
+        "unit": {"type": "str", "default": "#", "options": ["lb", "oz", "#", "dozen", "half"], "description": "may not be the same as product's default unit."},
+        "amount": {"type": "float", "default": 0.0},
+        "unit_price": {"type": "float", "default": 0.0, "description": "unit: $; may not be the same as product's default unit price."},
+        "price": {"type": "float", "default": 0.0, "description": "unit: $"}
+    },
+    "fee": {
+        "name": {"type": "str", "default": "", "description": "describe what the fee is for"},
+        "fee": {"type": "float", "default": 0.0, "description": "unit: $"}
+    },
+    "order_status": {
+        "status": {"type": "str", "default": "paid", "options": ["unpaid", "paid - preparing product", "paid - delivering product", 
+            "paid - product delivered", "paid - waiting for picking up", "paid - picked up", "cancelled - unrefund", "cancelled - refunded"]}
+    },
+    "order_status_history": {
+        "datetime": {"type": "datetime", "default": "1999-12-31T23:59:59"},
+        "status": {"fk": "order_status"}
+    },
+    "order": {
+        "id": {"type": "int", "pk": true}, 
+        "datetime": {"type": "datetime", "default": "1999-12-31T23:59:59"},
+        "customer": {"fk": "customer"}, 
+        "cart": {"m2m": "product_in_cart"},
+        "checkout_price": {"type": "float", "default": 0.0, "description": "unit: $; price of all the products in the cart"},
+        "discount": {"type": "float", "default": 0.0, "description": "unit: $"},
+        "discount_desc": {"type": "str", "default": ""},
+        "tax": {"type": "float", "default": 0.0, "description": "unit: $"},
+        "tax_desc": {"type": "str", "default": ""},
+        "fee_list": {"m2m": "fee"},
+        "total_fee": {"type": "float", "default": 0.0, "description": "unit: $"},
+        "total_price": {"type": "float", "default": 0.0, "description": "unit: $; checkout price - discount + tax + total_fee"},
+        "customer_balance_before": {"type": "float", "default": 0.0}, 
+        "customer_balance_after": {"type": "float", "default": 0.0}, 
+        "pay_method": {"type": "str", "default": "cash", "options": ["cash", "check", "zelle", "card", "membership balance deduction"]},
+        "status": {"fk": "order_status"},
+        "status_history": {"m2m": "order_status_history"},
+        "deliver": { "fk": "shipping" },
+        "deliver_method": {"type": "str", "default": "ship_to_home", "options":["ship_to_home", "local_pick_up"]},
+        "pick_up_time": {"type": "datetime", "default": "1999-12-31T23:59:59"}
+    }, 
+    "ship_to": {
+        "address": {"fk": "address"},
+        "status": {"type": "str", "default": "preparing", "options": ["preparing", "on the way", "arrived", "cancelled"]},
+        "note": {"type": "str", "default": ""}
+    },
+    "ship_tracking": {
+        "datetime": {"type": "datetime", "default": "1999-12-31T23:59:59"},
+        "ship_to": {"fk": "ship_to"}
+    },
+    "ship":{
+        "id": {"type": "int", "pk": true}, 
+        "scheduled_time": {"type": "datetime", "default": "1999-12-31T23:59:59"},
+        "carrier": {"type": "str", "default": ""},
+        "from": {"type": "str", "default": "Farm"},
+        "to": {"m2m": "ship_to"},
+        "tracking": {"m2m": "ship_tracking"}
+    }
+}
+
