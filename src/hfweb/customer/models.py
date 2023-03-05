@@ -26,10 +26,10 @@ class Address(models.Model):
     group = models.CharField(max_length=50, verbose_name="地址分组", blank=True, null=True)
 
     def __str__(self):
-        if self.street_address_2 == "":
-            return f"{self.street_address}, {self.city}, {self.state} {self.zip}"
-        else:
+        if self.street_address_2:
             return f"{self.street_address}, {self.street_address_2}, {self.city}, {self.state} {self.zip}"
+        else:
+            return f"{self.street_address}, {self.city}, {self.state} {self.zip}"
 
 
 class Customer(models.Model):
