@@ -30,13 +30,14 @@ class Customer(models.Model):
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=10)
     group = models.ForeignKey('CustomerGroup', on_delete=models.CASCADE, null=True, blank=True)
-    address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True)
-    pickup_address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True)
+    address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True, related_name="address")
+    pickup_address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True, related_name="pickup_address")
     email = models.CharField(max_length=50, null=True, blank=True)
     wechat = models.CharField(max_length=50, null=True, blank=True)
     facebook = models.CharField(max_length=10, null=True, blank=True)
     is_member = models.BooleanField(default=False, verbose_name="是否为禾富会员？")
     membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="注册会员时间")
     balance = models.FloatField(blank=True, null=True, verbose_name="账户余额")
+
 
 
