@@ -15,12 +15,12 @@ class GroupAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_member', 'show_balance', 'phone', 'group']
-    fields = ['name', 'is_member', 'membership_start_time', 'show_balance',
-            'show_deposit_info', 'show_consume_info',
+    fields = ['name', 'is_member', 'membership_start_time',
+            'show_balance', 'show_deposit_info', 'show_consume_info',
             'group', 'street_address', 'city', 'state', 'zipcode',
             'phone', 'email', 'wechat', 'facebook', ]
     list_filter = ('group', 'is_member')
-    readonly_fields = ('balance', )
+    readonly_fields = ('show_balance', 'show_deposit_info', 'show_consume_info')
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):

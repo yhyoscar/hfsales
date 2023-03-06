@@ -7,5 +7,5 @@ from .models import Address
 class AddressAdmin(admin.ModelAdmin):
     list_display = ['street_address', 'city', 'state', 'zipcode']
     fields = ['street_address', 'street_address_2', 'city', 'state', 'zipcode', 'lat', 'lon']
-    list_filter = ('state')
+    list_filter = ('state', )
     readonly_fields = ()
