@@ -24,8 +24,8 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['time', 'customer', 'purpose', 'amount', 'method']
-    fields = ['time', 'customer', 'purpose', 'amount', 'method', 'memo']
-    list_filter = ('customer', 'purpose', 'method')
+    list_display = ['time', 'customer', 'get_method_display', 'amount', 'get_payfor_display']
+    fields = ['time', 'customer', 'method', 'amount', 'payfor', 'memo']
+    list_filter = ('customer', 'method', 'payfor')
     readonly_fields = ()
 

@@ -38,10 +38,9 @@ class Customer(Address):
             return self.name
     
     def get_balance(self):
-        balance = 0.0
-        for obj in Transaction.objects.filter(customer__id=self.id):
-            balance += obj.purpose * obj.amount
-        return balance
+        ndd, sdd = self.get_deposit_info()
+        ntotal, stotal, naa, saa = self.get_consume_info()
+        return sdd - saa
 
     def show_balance(self):
         return f"${round(self.get_balance(), 2)}"
@@ -49,7 +48,7 @@ class Customer(Address):
 
     def get_deposit_info(self):
         total = 0.0
-        objs = Transaction.objects.filter(customer__id=self.id, purpose=1)
+        objs = Transaction.objects.filter(customer__id=self.id, payfor=1).exclude(method='AA')
         for obj in objs:
             total += obj.amount
         return len(objs), total
@@ -60,32 +59,36 @@ class Customer(Address):
     show_deposit_info.short_description = "充值记录"
 
     def get_consume_info(self):
-        total = 0.0
-        objs = Transaction.objects.filter(customer__id=self.id, purpose=-1)
+        total, naa, aa = 0, 0, 0
+        objs = Transaction.objects.filter(customer__id=self.id, payfor=-1)
         for obj in objs:
             total += obj.amount
-        return len(objs), total
+            if obj.method == 'AA':
+                naa += 1
+                aa += obj.amount
+        return len(objs), total, int(naa), aa
 
     def show_consume_info(self):
-        n, s = self.get_consume_info()
-        return f"消费{n}次，总共${round(s, 2)}"
+        ntotal, stotal, naa, saa = self.get_consume_info()
+        return f"消费{ntotal}次，总共${round(stotal, 2)} (使用代金券{naa}次，消费${round(saa, 2)})"
     show_consume_info.short_description = "消费记录"
 
 
 class Transaction(models.Model):
-    customer = models.ForeignKey("Customer", verbose_name="付款人", on_delete=models.PROTECT)
     time = models.DateTimeField(verbose_name="付款时间")
+    customer = models.ForeignKey("Customer", verbose_name="付款人", on_delete=models.PROTECT)
     method = models.CharField(max_length=2, verbose_name="付款方式",
-        choices=[("CS", "现金"),
+        choices=[("AA", "代金券"),
+                 ("CS", "现金"),
                  ("CK", "支票"),
                  ("ZE", "zelle转账"),
                  ("VM", "venmo转账"),
                  ("CC", "信用卡"),
-                 ("OT", "其它")])
+                 ("OT", "其它方式")])
     amount = models.FloatField(verbose_name="金额($)")
-    purpose = models.IntegerField(verbose_name="付款目的", 
-        choices=[(1, "充值"), (-1, "消费")])
+    payfor = models.IntegerField(verbose_name="购买对象", 
+        choices=[(1, "代金券"), (-1, "农产品")])
     memo = models.CharField(max_length=50, null=True, blank=True, verbose_name="备注")
 
     def __str__(self):
-        return f"{self.time}: {self.customer} {self.get_purpose_display()}${round(self.amount,2)}"
+        return f"{self.time}: {self.customer} {self.get_method_display()}支付${round(self.amount,2)}购买{self.get_payfor_display()}"
