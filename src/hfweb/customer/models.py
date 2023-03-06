@@ -37,5 +37,52 @@ class Customer(Address):
         else:
             return self.name
     
-    #def show_balance(self):
+    def get_balance(self):
+        balance = 0.0
+        for obj in Transaction.objects.filter(customer__id=self.id):
+            balance += obj.purpose * obj.amount
+        return balance
 
+    def show_balance(self):
+        return f"${round(self.get_balance(), 2)}"
+
+    def get_deposit_info(self):
+        total = 0.0
+        objs = Transaction.objects.filter(customer__id=self.id, purpose>0)
+        for obj in objs:
+            total += obj.amount
+        return len(objs), total
+
+    def show_deposit_info(self):
+        n, s = self.get_deposit_info()
+        return f"充值{n}次，总共${round(s, 2)}"
+
+    def get_consume_info(self):
+        total = 0.0
+        objs = Transaction.objects.filter(customer__id=self.id, purpose<0)
+        for obj in objs:
+            total += obj.amount
+        return len(objs), total
+
+    def show_consume_info(self):
+        n, s = self.get_consume_info()
+        return f"消费{n}次，总共${round(s, 2)}"
+
+
+class Transaction(models.Model):
+    customer = models.ForeignKey("Customer", verbose_name="付款人")
+    time = models.DateTimeField(auto_now_add=True, verbose_name="付款时间")
+    method = models.CharField(max_length=2, verbose_name="付款方式",
+        choices=[("CS", "现金"),
+                 ("CK", "支票"),
+                 ("ZE", "zelle转账"),
+                 ("VM", "venmo转账"),
+                 ("CC", "信用卡"),
+                 ("OT", "其它")])
+    amount = models.FloatField(verbose_name="金额($)")
+    purpose = models.IntegerField(verbose_name="付款目的", 
+        choices=[(1, "充值"), (-1, "消费")])
+    memo = models.CharField(max_length=50, null=True, blank=True, verbose_name="备注")
+
+    def __str__(self):
+        return f"{self.time}: {self.customer} {self.get_purpose_display()}${round(self.amount,2)}"
