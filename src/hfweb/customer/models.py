@@ -1,5 +1,5 @@
 from django.db import models
-from commons.models import Address
+from commons.models import Address, Transaction
 
 # Create your models here.
 
@@ -18,7 +18,6 @@ class Group(models.Model):
     get_member_count.short_description = "会员数量"
 
 
-#class Customer(models.Model):
 class Customer(Address):
     name = models.CharField(max_length=50, verbose_name="姓名")
     phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="电话")
@@ -28,8 +27,9 @@ class Customer(Address):
     wechat = models.CharField(max_length=50, null=True, blank=True, verbose_name="微信")
     facebook = models.CharField(max_length=10, null=True, blank=True, verbose_name="Facebook")
     is_member = models.BooleanField(default=False, verbose_name="是否为禾富会员？")
-    membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="注册会员时间")
-    balance = models.FloatField(blank=True, null=True, verbose_name="账户余额")
+    membership_start_time = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name="成为会员时间")
+    #balance = models.FloatField(default=0.0, verbose_name="账户余额")
+    #deposit_history = models.ManyToManyField("Transaction", null=True, blank=True, verbose_name="充值记录")
 
     def __str__(self):
         if self.is_member:
@@ -37,3 +37,5 @@ class Customer(Address):
         else:
             return self.name
     
+    #def show_balance(self):
+

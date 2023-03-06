@@ -15,9 +15,10 @@ class GroupAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_member', 'balance', 'phone', 'group']
-    fields = ['name', 'group', 'street_address', 'city', 'state', 'zipcode',
-            'phone', 'email', 'wechat', 'facebook', 'is_member', 'membership_start_time', 'balance']
+    fields = ['name', 'is_member', 'membership_start_time', 'balance',
+            'group', 'street_address', 'city', 'state', 'zipcode',
+            'phone', 'email', 'wechat', 'facebook', ]
     list_filter = ('group', 'is_member')
-    readonly_fields = ()
+    readonly_fields = ('balance', )
 
 

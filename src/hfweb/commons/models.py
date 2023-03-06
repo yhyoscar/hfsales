@@ -20,3 +20,17 @@ class Address(models.Model):
         return f"{street}, {self.city}, {self.state} {self.zipcode}"
 
 
+class Transaction(models.Model):
+    time = models.DateTimeField(auto_now_add=True, verbose_name="付款时间")
+    method = models.CharField(max_length=2, verbose_name="付款方式",
+        choices=[("CS", "现金"),
+                 ("CK", "支票"),
+                 ("ZE", "zelle转账"),
+                 ("VM", "venmo转账"),
+                 ("CC", "信用卡"),
+                 ("OT", "其它")])
+    amount = models.FloatField(verbose_name="金额($)")
+    memo = models.CharField(max_length=50, null=True, blank=True, verbose_name="备注")
+
+    def __str__(self):
+        return f"{self.time}: {self.method} ${round(self.amount,2)}"
