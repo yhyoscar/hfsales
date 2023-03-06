@@ -3,7 +3,7 @@ from commons.models import Address
 
 # Create your models here.
 
-class CustomerGroup(models.Model):
+class Group(models.Model):
     name = models.CharField(max_length=20, verbose_name="客户分组名称")
 
     def __str__(self):
@@ -18,11 +18,12 @@ class CustomerGroup(models.Model):
     get_member_count.short_description = "会员数量"
 
 
-class Customer(models.Model):
+#class Customer(models.Model):
+class Customer(Address):
     name = models.CharField(max_length=50, verbose_name="姓名")
-    phone = models.CharField(max_length=10, verbose_name="电话")
-    group = models.ForeignKey('CustomerGroup', on_delete=models.CASCADE, null=True, blank=True, verbose_name="分组")
-    address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True, verbose_name="住址")
+    phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="电话")
+    group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True, blank=True, verbose_name="分组")
+    #address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True, related_name="address", verbose_name="住址")
     email = models.CharField(max_length=50, null=True, blank=True, verbose_name="Email")
     wechat = models.CharField(max_length=50, null=True, blank=True, verbose_name="微信")
     facebook = models.CharField(max_length=10, null=True, blank=True, verbose_name="Facebook")
@@ -35,4 +36,4 @@ class Customer(models.Model):
             return f"{self.name}(会员)"
         else:
             return self.name
-
+    

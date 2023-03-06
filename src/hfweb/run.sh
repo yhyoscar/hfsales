@@ -6,8 +6,9 @@ rm -rf */*/__pycache__
 rm -rf */*/*/__pycache__
 
 
-python3 manage.py makemigrations
+#python3 manage.py makemigrations
 python3 manage.py makemigrations customer
+python3 manage.py makemigrations commons
 
 python3 manage.py migrate
 python3 manage.py collectstatic
