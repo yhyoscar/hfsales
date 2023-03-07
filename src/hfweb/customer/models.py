@@ -88,7 +88,10 @@ class Transaction(models.Model):
     amount = models.FloatField(verbose_name="金额($)")
     payfor = models.IntegerField(verbose_name="购买对象", 
         choices=[(1, "代金券"), (-1, "农产品")])
-    memo = models.CharField(max_length=50, null=True, blank=True, verbose_name="备注")
+    memo = models.TextField(max_length=400, null=True, blank=True, verbose_name="备注")
 
     def __str__(self):
         return f"{self.time}: {self.customer} {self.get_method_display()}支付${round(self.amount,2)}购买{self.get_payfor_display()}"
+
+
+

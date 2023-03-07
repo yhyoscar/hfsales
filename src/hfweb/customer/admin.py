@@ -24,8 +24,16 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['time', 'customer', 'get_method_display', 'amount', 'get_payfor_display']
+    list_display = ['time', 'customer_link', 'method', 'amount', 'payfor']
     fields = ['time', 'customer', 'method', 'amount', 'payfor', 'memo']
     list_filter = ('customer', 'method', 'payfor')
     readonly_fields = ()
+
+    def customer_link(self, obj):
+        return mark_safe(f'<a href="/admin/customer/customer/{obj.customer.id}/change/">{obj.customer.__str__()}</a>')
+    customer_link.short_description = "付款人"
+    customer_link.allow_tags = True
+
+    class Media:
+        js = ["admin/js/transaction_form.js"]
 
