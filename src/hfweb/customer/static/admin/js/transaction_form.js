@@ -7,7 +7,13 @@ function member_check(){
     x = document.getElementById('id_customer');
     if (x != null) {
         i = x.selectedIndex;
-        if (x.options[i].text.includes("(会员)")) {
+        if (x.options[i].text.includes("会员")) {
+            if (document.getElementById("id_method").value == "AA") {
+                disable_aa_payfor();
+            }
+            if (document.getElementById("id_payfor").value == "1") {
+                disable_aa_method();
+            }
             document.getElementById("id_method").onchange = function(){ 
                 if (this.value == "AA") {
                     disable_aa_payfor();
@@ -29,7 +35,7 @@ function member_check(){
 
         x.onchange = function(){
             j = this.selectedIndex;
-            if (x.options[j].text.includes("(会员)")) {
+            if (x.options[j].text.includes("会员")) {
                 enable_aa_method();
                 enable_aa_payfor();
                 document.getElementById("id_method").onchange = function(){
