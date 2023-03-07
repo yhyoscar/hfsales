@@ -7,7 +7,7 @@ class Product(models.Model):
     category = models.CharField(max_length=2, verbose_name="产品类别",
         choices=[('MR', '食用菌'),
                  ('VG', '蔬菜'),
-                 ('FR', '水果'),
+                 ('FR', '瓜果'),
                  ('EG', '蛋类'),
                  ('MT', '肉类'),
                  ('CK', '熟食'),

@@ -22,14 +22,46 @@ class Customer(Address):
     name = models.CharField(max_length=50, verbose_name="姓名")
     phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="电话")
     group = models.ForeignKey('Group', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="分组")
-    #address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True, related_name="address", verbose_name="住址")
     email = models.CharField(max_length=50, null=True, blank=True, verbose_name="Email")
     wechat = models.CharField(max_length=50, null=True, blank=True, verbose_name="微信")
     facebook = models.CharField(max_length=10, null=True, blank=True, verbose_name="Facebook")
     is_member = models.BooleanField(default=False, verbose_name="是否为禾富会员？")
     membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="成为会员时间")
-    #balance = models.FloatField(default=0.0, verbose_name="账户余额")
-    #deposit_history = models.ManyToManyField("Transaction", null=True, blank=True, verbose_name="充值记录")
+    bak_name = models.CharField(max_length=50, verbose_name="紧急联系人姓名", null=True, blank=True)
+    bak_phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="紧急联系人电话")
+    product_options = [ ('MR', '食用菌'),
+                        ('VG', '蔬菜'),
+                        ('FR', '瓜果'),
+                        ('EG', '蛋类'),
+                        ('MT', '肉类'),
+                        ('CK', '熟食')]
+    prefer_communication = models.CharField(max_length=1, verbose_name="沟通方式偏好", blank=True, null=True,
+        choices=[("C", "微信"),
+                 ("P", "电话"), 
+                 ("T", "短信"), 
+                 ("E", "Email"), 
+                 ("A", "线下见面")])
+    prefer_product_1 = models.CharField(max_length=2, verbose_name="产品偏好1", blank=True, null=True,
+        choices=product_options)
+    prefer_product_2 = models.CharField(max_length=2, verbose_name="产品偏好2", blank=True, null=True,
+        choices=product_options)
+    prefer_product_3 = models.CharField(max_length=2, verbose_name="产品偏好3", blank=True, null=True,
+        choices=product_options)
+    prefer_shopping = models.CharField(max_length=1, verbose_name="购买方式偏好", blank=True, null=True,
+        choices=[("C", "微信"),
+                 ("W", "网购"),
+                 ("P", "电话")])
+    prefer_ship = models.CharField(max_length=1, verbose_name="产品递送方式偏好", blank=True, null=True,
+        choices=[("D", "送货上门"),
+                 ("L", "本地取货点取货"),
+                 ("F", "自己去农场取货")])
+    perfer_membership = models.CharField(max_length=1, verbose_name="成为会员意向", blank=True, null=True,
+        choices=[("A", "已是会员"),
+                 ("1", "未来1个月内会考虑加入"),
+                 ("3", "未来3个月内会考虑加入"),
+                 ("Y", "未来12个月内会考虑加入"), 
+                 ("N", "暂不考虑加入")])
+    note = models.TextField(max_length=400, verbose_name="备注信息", blank=True, null=True)
 
     def __str__(self):
         if self.is_member:
