@@ -17,7 +17,7 @@ class Product(models.Model):
     unit = models.CharField(max_length=2, verbose_name="单位", null=True, blank=True,
         choices=[('G', '个'),
                  ('Z', '只'),
-                 ('H', '半只'),
+                 #('H', '半只'),
                  ('12', '打（12个）'),
                  ('lb', '磅'),
                  ('oz', '盎司')])
@@ -28,5 +28,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def show_storage(self):
+        return f"{self.number_in_stock} {self.get_unit_display()}"
+    show_storage.short_description = "存货数量"
 
     
