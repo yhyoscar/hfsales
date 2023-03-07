@@ -1,8 +1,11 @@
 from django.db import models
 import pandas as pd
+from hfweb.settings import web_info
+
 # Create your models here.
 
-states = pd.read_csv('commons/states.csv')
+
+states = pd.read_csv(web_info['states_csv_path'])
 states = zip(states['code'].values, states['state'].values)
 
 class Address(models.Model):

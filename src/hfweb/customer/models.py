@@ -81,13 +81,13 @@ class Customer(Address):
     def show_balance(self):
         bal = round(self.get_balance(), 2)
         if bal >= 1:
-            text = f'<b><font color="green">${bal}</font></b>'
+            text = f'<b><font color="green">{bal}</font></b>'
         elif bal <= -1:
-            text = f'<b><font color="red">${bal}</font></b>'
+            text = f'<b><font color="red">{bal}</font></b>'
         else:
-            text = f'<b><font color="black">${bal}</font></b>'
+            text = f'<b><font color="black">{bal}</font></b>'
         return mark_safe(text)
-    show_balance.short_description = "账户余额"
+    show_balance.short_description = "账户余额($)"
 
     def show_transaction_history(self):
         text = '<table class="table table-hover"><thead><tr>'+\
@@ -95,7 +95,7 @@ class Customer(Address):
             '<th scope="col">付款方式</th>'+\
             '<th scope="col">金额($)</th>'+\
             '<th scope="col">购买对象</th>'+\
-            '<th scope="col">账户余额</th></tr></thead><tbody>'
+            '<th scope="col">账户余额($)</th></tr></thead><tbody>'
         objs = Transaction.objects.filter(customer__id=self.id).order_by('-time')
         balances = [0.0]
         for obj in objs[::-1]:
@@ -109,7 +109,7 @@ class Customer(Address):
         for i in range(len(objs)):
             obj = objs[i]
             text += '<tr>'+\
-                    '<td><a href="/admin/customer/transaction/'+str(obj.id)+'/change/">'+str(localtime(obj.time))[:19].replace(' ', 'T')+'</a></td>'+\
+                    '<td><a href="/admin/customer/transaction/'+str(obj.id)+'/change/">'+str(localtime(obj.time))[:19]+'</a></td>'+\
                 '<td>'+str(obj.get_method_display())+'</td>'+\
                 '<td>'+str(round(obj.amount,2))+'</td>'+\
                 '<td>'+str(obj.get_payfor_display())+'</td>'+\

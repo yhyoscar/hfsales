@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+from django.utils.html import escape
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name="产品名称")
@@ -33,4 +36,7 @@ class Product(models.Model):
         return f"{self.number_in_stock} {self.get_unit_display()}"
     show_storage.short_description = "存货数量"
 
-    
+    def show_picture(self):
+        return mark_safe(u'<img src="%s" />' % escape(self.picture.url))
+    show_picture.short_description = '产品图片'
+    show_picture.allow_tags = True    
