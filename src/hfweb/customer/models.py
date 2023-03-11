@@ -1,6 +1,7 @@
 from django.db import models
 from commons.models import Address
 
+import datetime
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.timezone import localtime
@@ -29,7 +30,7 @@ class Customer(Address):
     wechat = models.CharField(max_length=50, null=True, blank=True, verbose_name="微信")
     facebook = models.CharField(max_length=10, null=True, blank=True, verbose_name="Facebook")
     is_member = models.BooleanField(default=False, verbose_name="是否为禾富会员？")
-    membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="成为会员时间")
+    membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="成为会员时间", default=datetime.datetime.now(), editable=True)
     bak_name = models.CharField(max_length=50, verbose_name="紧急联系人姓名", null=True, blank=True)
     bak_phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="紧急联系人电话")
     product_options = [ ('MR', '食用菌'),
@@ -73,6 +74,10 @@ class Customer(Address):
         else:
             return self.name
     
+    def trans_button(self):
+        return mark_safe("<a href='/admin/customer/transaction/add/'><i class='fa fa-credit-card'></i></a>")
+    trans_button.short_description = ""
+
     def get_balance(self):
         ndd, sdd = self.get_deposit_info()
         ntotal, stotal, naa, saa = self.get_consume_info()
@@ -177,7 +182,7 @@ class Customer(Address):
 
 
 class Transaction(models.Model):
-    time = models.DateTimeField(verbose_name="付款时间")
+    time = models.DateTimeField(verbose_name="付款时间", default=datetime.datetime.now(), editable=True)
     customer = models.ForeignKey("Customer", verbose_name="付款人", on_delete=models.PROTECT)
     method = models.CharField(max_length=2, verbose_name="付款方式",
         choices=[("AA", "代金券"),

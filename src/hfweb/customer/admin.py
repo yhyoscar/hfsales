@@ -14,7 +14,7 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'is_member', 'show_balance', 'show_prefer_communication', 'group']
+    list_display = ['name', 'is_member', 'show_balance', 'trans_button', 'show_prefer_communication', 'group']
     #fields = ['name', 'is_member', 'membership_start_time',
     #        'show_balance', 'show_deposit_info', 'show_consume_info',
     #        'group', 'street_address', 'city', 'state', 'zipcode',

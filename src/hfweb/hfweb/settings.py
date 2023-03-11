@@ -55,7 +55,12 @@ INSTALLED_APPS = [
     'product',
     'order',
     'ship',
+    'home',
+    'django_user_agents',
+    'tracking_analyzer',
 ]
+
+GEOIP_PATH = web_info['GEOIP_PATH']
 
 # Cache backend is optional, but recommended to speed up user agent parsing
 CACHES = {

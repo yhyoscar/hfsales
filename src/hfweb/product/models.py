@@ -20,12 +20,12 @@ class Product(models.Model):
     unit = models.CharField(max_length=2, verbose_name="单位", null=True, blank=True,
         choices=[('G', '个'),
                  ('Z', '只'),
-                 ('H', '份(每份半只)'),
-                 ('B', '袋(每袋50个)'),
-                 ('12', '打(每打12个)'),
+                 ('H', '份'),
+                 ('B', '袋'),
+                 ('12', '打'),
                  ('lb', '磅'),
                  ('oz', '盎司')])
-    #unit_note = models.CharField(max_length=20, verbose_name="单位备注", null=True, blank=True)
+    unit_note = models.CharField(max_length=20, verbose_name="单位备注", null=True, blank=True, editable = True, default='')
     unit_price = models.FloatField(verbose_name="单价($)", null=True, blank=True)
     number_in_stock = models.FloatField(verbose_name="库存数量", null=True, blank=True)
     need_refrig = models.BooleanField(default=False, verbose_name="需要冷藏")
@@ -34,15 +34,25 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def show_unit(self):
+        if self.unit_note:
+            return self.get_unit_display()+f"({self.unit_note})"
+        else:
+            return self.get_unit_display()
+    
+    def show_unit_price(self):
+        #if self.unit_note:
+        #    return f"${round(self.unit_price,2)}/"+self.get_unit_display()+f"({self.unit_note})"
+        #else:
+        return f"${round(self.unit_price,2)}/"+self.get_unit_display()
+    show_unit_price.short_description = "单价"
+
     def show_storage(self):
         if self.number_in_stock > 0:
             out = f'<b><font color="green">{self.number_in_stock}</font></b>'
         else:
             out = f'<b><font color="red">{self.number_in_stock}</font></b>'
-        out = f"{out} {self.get_unit_display()}"
-        if hasattr(self, "unit_note"):
-            if self.unit_note:
-                out += f"({self.unit_note})"
+        out = f"{out}{self.get_unit_display()}"
         return mark_safe(out)
     show_storage.short_description = "库存数量"
 
