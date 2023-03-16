@@ -19,6 +19,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('products/', include('product.urls')),
+    path('customer/', include('customer.urls')),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

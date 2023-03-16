@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+<div class="mymargin" style="height:70px;"></div>
+
+
+<section class="page-section" style="padding:50px 0px;">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8 col-xl-6 text-center">
+                <h2 class="mt-0">Start Your Membership Today!</h2>
+                <hr class="divider" />
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+            <div class="col-lg-6">
+                <p class="text-muted">Our membership follows a prepaid-recharge model: the prepaid payment will be saved in your Hephzibah member saving account, and everytime when you buy products from us, the corresponding amount will be deduct from your saving account. You can recharge your saving account anytime you like. We'll remind you when your balance is low. There is NO registration fee or service fee.</p>
+                <p class="text-muted">We currently accept no-less-than $500 prepaid payment for new member registration, and we offer 10% discount for early-bird registration (before April 30, 2023). That means if you prepaid $500 to become a member, you will have a balance of $550 immidiately on your saving account.</p>
+            </div>
+            <div class="col-lg-8">
+            <p class="text-muted text-end">* required field</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="inputName" name="fullname" type="text" placeholder="Enter your name..." required/>
+                        <label for="inputName">Full name*</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="inputEmail" name="email" type="email" placeholder="name@example.com" required/>
+                        <label for="inputEmail">Email address*</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="(123) 456-7890" required/>
+                        <label for="inputPhone">Phone number*</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="inputStreet" name="street" type="text" placeholder="abc" required/>
+                        <label for="inputPhone">Address*</label>
+                    </div>
+
+                    <div class="row form-row">
+                        <div class="form-floating mb-3 col-md-6">
+                          <input type="text" class="form-control" id="inputCity" name="city" placeholder="abc" required>
+                          <label for="inputCity" style="margin-left:12px;">City*</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-4">
+                          <select id="inputState" class="form-control" name="state" placeholder="abc" required>
+                            {% for code, state in states.items %}
+                                <option {% if code == 'NY' %}selected{% endif %} value="{{ code }}">{{ state }}</option>
+                            {% endfor %}
+                          </select>
+                          <label for="inputState" style="margin-left:12px;">State*</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-2">
+                          <input type="text" class="form-control" id="inputZip" name="zip" placeholder="00000" required>
+                          <label for="inputZip" style="margin-left:12px;">Zip*</label>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="inputWechat" name="wechat" type="text" placeholder="abc"/>
+                        <label for="inputWechat">Wechat ID</label>
+                    </div>
+                    
+                    <div class="row form-row">
+                    <div class="form-floating mb-3 col-md-6">
+                        <input class="form-control" id="inputEmergencyName" name="emergency_name" type="text" placeholder="abc"/>
+                        <label for="inputEmergencyName" style="margin-left:12px;">Emergency Contact Name</label>
+                    </div>
+                    
+                    <div class="form-floating mb-3 col-md-6">
+                        <input class="form-control" id="inputEmergencyPhone" name="emergency_phone" type="tel" placeholder="(123) 456-7890"/>
+                        <label for="inputEmergencyPhone" style="margin-left:12px;">Emergency Contact Phone Number</label>
+                    </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                      <select id="inputPreferCommunication" class="form-control" name="prefer_communication" placeholder="abc">
+                        <option value="-">--</option>
+                        {% for x,y in communications.items %}
+                        <option value="{{ x }}">{{ y }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="inputPreferCommunication">Prefered Way of Communication</label>
+                    </div>
+                    
+                    <div class="row form-row">
+                    {% for i in "123" %}
+                    <div class="form-floating mb-3 col-md-4">
+                        <select id="inputPreferProduct_{{ i }}" class="form-control" name="prefer_product_{{ i }}" placeholder="abc">
+                        <option value="-">--</option>
+                        {% for x,y in product_options.items %}
+                        <option value="{{ x }}">{{ y }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="inputPreferProduct_{{ i }}" style="margin-left:12px;">Prefered Product {{ i }}</label>
+                    </div>
+                    {% endfor %}
+                    </div>
+
+                    <div class="form-floating mb-3">
+                      <select id="inputPreferShopping" class="form-control" name="prefer_shopping" placeholder="abc">
+                        <option value="-">--</option>
+                        {% for x,y in shoppings.items %}
+                        <option value="{{ x }}">{{ y }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="inputShopping">Prefered Way of Shopping</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                      <select id="inputPreferShip" class="form-control" name="prefer_ship" placeholder="abc">
+                        <option value="-">--</option>
+                        {% for x,y in ships.items %}
+                        <option value="{{ x }}">{{ y }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="inputShip">Prefered Way of Product Delivery</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                      <select id="inputPreferMemtime" class="form-control" name="prefer_memtime" placeholder="abc">
+                        <option value="-">--</option>
+                        {% for x,y in memtimes.items %}
+                        <option value="{{ x }}">{{ y }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="inputMemtime">I want to become a member </label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="inputMessage" name="message" type="text" placeholder="Enter your message here..." style="height: 10rem"></textarea>
+                        <label for="inputMessage">Message</label>
+                    </div>
+                    <div class="d-grid"><button class="btn btn-primary btn-xl" name="apply_membership" type="submit">Submit</button></div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+
+</script>
+
+
+{% endblock %}

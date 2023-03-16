@@ -15,20 +15,11 @@ class GroupAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_member', 'show_balance', 'trans_button', 'show_prefer_communication', 'group']
-    #fields = ['name', 'is_member', 'membership_start_time',
-    #        'show_balance', 'show_deposit_info', 'show_consume_info',
-    #        'group', 'street_address', 'city', 'state', 'zipcode',
-    #        'phone', 'email', 'wechat', 'facebook',
-    #        'bak_name', 'bak_phone',
-    #        'prefer_communication',
-    #        ('prefer_product_1', 'prefer_product_2', 'prefer_product_3'),
-    #        'prefer_shopping', 'prefer_ship', 'perfer_membership',
-    #        'note']
     list_filter = ('group', 'is_member')
     readonly_fields = ('show_balance', 'show_deposit_info', 'show_consume_info', 'show_transaction_history')
     fieldsets = [
         (None, {
-            'fields': ('name', 'group', 'is_member', 'membership_start_time', 'show_balance')
+            'fields': ('name', 'group', 'is_member', 'create_time', 'membership_start_time', 'show_balance')
         }),
         ('交易记录', {
         'fields': ['show_deposit_info', 'show_consume_info', 'show_transaction_history'],
@@ -42,7 +33,7 @@ class CustomerAdmin(admin.ModelAdmin):
         ('个人偏好', {
         'fields': ['prefer_communication',
             ('prefer_product_1', 'prefer_product_2', 'prefer_product_3'),
-            'prefer_shopping', 'prefer_ship', 'perfer_membership',],
+            'prefer_shopping', 'prefer_ship', 'prefer_membership',],
         'classes': ['collapse',]
         }),
         (None, {

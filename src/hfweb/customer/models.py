@@ -23,6 +23,7 @@ class Group(models.Model):
 
 
 class Customer(Address):
+    create_time = models.DateTimeField(blank=True, null=True, verbose_name="客户注册时间", default=datetime.datetime.now(), editable=True)
     name = models.CharField(max_length=50, verbose_name="姓名")
     phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="电话")
     group = models.ForeignKey('Group', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="分组")
@@ -30,7 +31,7 @@ class Customer(Address):
     wechat = models.CharField(max_length=50, null=True, blank=True, verbose_name="微信")
     facebook = models.CharField(max_length=10, null=True, blank=True, verbose_name="Facebook")
     is_member = models.BooleanField(default=False, verbose_name="是否为禾富会员？")
-    membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="成为会员时间", default=datetime.datetime.now(), editable=True)
+    membership_start_time = models.DateTimeField(blank=True, null=True, verbose_name="成为会员时间", editable=True)
     bak_name = models.CharField(max_length=50, verbose_name="紧急联系人姓名", null=True, blank=True)
     bak_phone = models.CharField(max_length=10, null=True, blank=True, verbose_name="紧急联系人电话")
     product_options = [ ('MR', '食用菌'),
@@ -60,7 +61,7 @@ class Customer(Address):
         choices=[("D", "送货上门"),
                  ("L", "本地取货点取货"),
                  ("F", "自己去农场取货")])
-    perfer_membership = models.CharField(max_length=1, verbose_name="成为会员意向", blank=True, null=True,
+    prefer_membership = models.CharField(max_length=1, verbose_name="成为会员意向", blank=True, null=True,
         choices=[("A", "已是会员"),
                  ("1", "未来1个月内会考虑加入"),
                  ("3", "未来3个月内会考虑加入"),

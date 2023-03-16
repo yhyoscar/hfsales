@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<!-- Products-->
+
+<div class="mymargiin" style="height:70px;"></div>
+{% for category, prods in products.items %}
+    <section class="page-section" id="category_{{ category }}" style="padding: 50px 0px;">
+        <div class="container px-4 px-lg-5">
+            <h2 class="text-center mt-0">{{ category }}</h2>
+            <hr class="divider" />
+
+                <div class="row gx-4 gx-lg-5">
+                {% for prod in prods %}
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="mt-5">
+                        <div class="mb-2">
+                            <img class="product-picture" width="100%" src="{{ prod.picture.url }}">
+                        </div>
+                        <h3 class="h5 mb-2">{{ prod.name | safe }}</h3>
+                        <p class="text-muted mb-0">Retail price: ${{ prod.retail_unit_price }} / {{ prod.unit_en }}</p>
+                        <p class="text-muted mb-0">Member's price: ${{ prod.unit_price }} / {{ prod.unit_en }}</p>
+                        {% if prod.unit_note %}
+                            <p class="text-muted mb-0">({{ prod.unit_note }})</p>
+                        {% endif %}
+                        
+                        {% if prod.number_in_stock > 0 %}
+                            <p class="text-primary mb-0">In-stock</p>
+                        {% else %}
+                            <p class="text-danger mb-0">Sold out</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                
+                </div>
+        </div>
+    </section>
+{% endfor %}
+
+<script>
+
+</script>
+
+
+{% endblock %}
+
+
+

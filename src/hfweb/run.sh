@@ -1,16 +1,16 @@
 #!/bin/bash
 
-rm -rf */migrations
-rm -rf */__pycache__
-rm -rf */*/__pycache__
-rm -rf */*/*/__pycache__
+rm -rfv */migrations
+rm -rfv */__pycache__
+rm -rfv */*/__pycache__
+rm -rfv */*/*/__pycache__
 
 
 python3 manage.py makemigrations commons
 python3 manage.py makemigrations customer
 python3 manage.py makemigrations product
 python3 manage.py makemigrations home
-python3 manage.py makemigrations
+#python3 manage.py makemigrations
 
 python3 manage.py migrate 
 #python3 manage.py migrate customer
